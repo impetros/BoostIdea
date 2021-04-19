@@ -4,13 +4,12 @@ contract Idea {
     struct Request {
         string description;
         uint value;
-        address recipient;
+        address payable recipient;
         bool complete;
         uint approvalCount;
         mapping (address => bool) approvals;
     }
     
-    //Request[] public requests;
     uint public numRequests;
     mapping (uint => Request) public requests;
     
@@ -36,12 +35,32 @@ contract Idea {
         approversCount++;
     }
     
-    function createRequest(string memory description, uint value, address recipient) public allowOnlyManager {
+    function createRequest(string memory description, uint value, address payable recipient) public allowOnlyManager {
         Request storage r = requests[numRequests++];
         r.description = description;
         r.value = value;
         r.recipient = recipient;
         r.complete = false;
         r.approvalCount = 0;
+    }
+    
+    function approveRequest(uint index) public {
+        Request storage request = requests[index];
+
+        require(approvers[msg.sender]);
+        require(!request.approvals[msg.sender]);
+
+        request.approvals[msg.sender] = true;
+        request.approvalCount++;
+    }
+
+    function finalizeRequest(uint index) public allowOnlyManager {
+        Request storage request = requests[index];
+
+        require(request.approvalCount > (approversCount / 2));
+        require(!request.complete);
+
+        request.recipient.transfer(request.value);
+        request.complete = true;
     }
 }
