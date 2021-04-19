@@ -6,7 +6,7 @@ contract Idea {
         uint value;
         address payable recipient;
         bool complete;
-        uint approvalCount;
+        uint credits;
         mapping (address => bool) approvals;
     }
     
@@ -14,25 +14,35 @@ contract Idea {
     mapping (uint => Request) public requests;
     
     address public manager;
-    uint public minimumContribution;
-    mapping(address => bool) public approvers;
-    uint public approversCount;
+    uint public oneCreditValue;
+    mapping(address => uint) public approvers;
+    uint public credits;
 
     modifier allowOnlyManager() {
         require(msg.sender == manager);
         _;
     }
     
-    constructor(uint minimum) {
+    constructor(uint creditValue) {
         manager = msg.sender;
-        minimumContribution = minimum;
+        oneCreditValue = creditValue;
     }
     
     function contribute() public payable {
-        require(msg.value > minimumContribution);
+        require(msg.value >= oneCreditValue);
 
-        approvers[msg.sender] = true;
-        approversCount++;
+        uint value = msg.value / oneCreditValue;
+        approvers[msg.sender] += value;
+        credits += value;
+        
+        // calculate the change 
+        uint change = msg.value % oneCreditValue;
+        
+        // send the change back to the approver
+        if(change != 0) {
+            address payable senderAddress = payable(msg.sender);
+            senderAddress.transfer(change);
+        }
     }
     
     function createRequest(string memory description, uint value, address payable recipient) public allowOnlyManager {
@@ -41,23 +51,23 @@ contract Idea {
         r.value = value;
         r.recipient = recipient;
         r.complete = false;
-        r.approvalCount = 0;
+        r.credits = 0;
     }
     
     function approveRequest(uint index) public {
         Request storage request = requests[index];
 
-        require(approvers[msg.sender]);
+        require(approvers[msg.sender] > 0);
         require(!request.approvals[msg.sender]);
 
         request.approvals[msg.sender] = true;
-        request.approvalCount++;
+        request.credits += approvers[msg.sender];
     }
 
     function finalizeRequest(uint index) public allowOnlyManager {
         Request storage request = requests[index];
 
-        require(request.approvalCount > (approversCount / 2));
+        require(request.credits > (credits / 2));
         require(!request.complete);
 
         request.recipient.transfer(request.value);
