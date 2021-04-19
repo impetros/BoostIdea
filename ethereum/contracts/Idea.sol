@@ -1,5 +1,19 @@
 pragma solidity ^0.8.3;
 
+contract IdeaFactory {
+    Idea[] public deployedIdeas;
+
+    function createCampaign(uint minimum) public {
+        Idea newIdea = new Idea(minimum, msg.sender);
+        deployedIdeas.push(newIdea);
+    }
+
+    function getDeployedIdeas() public view returns (Idea[] memory) {
+        return deployedIdeas;
+    }
+}
+
+
 contract Idea {
     struct Request {
         string description;
@@ -23,8 +37,8 @@ contract Idea {
         _;
     }
     
-    constructor(uint creditValue) {
-        manager = msg.sender;
+    constructor(uint creditValue, address sender) {
+        manager = sender;
         oneCreditValue = creditValue;
     }
     
