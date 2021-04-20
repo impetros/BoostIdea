@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/impetros/BoostIdea#readme",
   "dependencies": {
+    "@truffle/hdwallet-provider": "^1.2.6",
     "fs-extra": "^9.1.0",
     "path": "^0.12.7",
     "solc": "^0.8.3",
-    "truffle-hdwallet-provider": "^1.0.17",
     "web3": "^1.3.5"
   }
 }
