@@ -3,7 +3,7 @@ pragma solidity ^0.8.3;
 contract IdeaFactory {
     Idea[] public deployedIdeas;
 
-    function createCampaign(uint minimum) public {
+    function createIdea(uint minimum) public {
         Idea newIdea = new Idea(minimum, msg.sender);
         deployedIdeas.push(newIdea);
     }

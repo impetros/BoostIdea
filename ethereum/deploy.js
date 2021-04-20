@@ -3,10 +3,10 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require('web3');
 const compiledFactory = require('./build/IdeaFactory.json');
 
-const provider = new HDWalletProvider(
-  'make fun distance firm echo mother forum train giant rare solar zoo',
-  'https://rinkeby.infura.io/v3/b8051aded8e54b87b2a5aff71abaf2c5'
-);
+const provider = new HDWalletProvider( {
+    mnemonic: 'make fun distance firm echo mother forum train giant rare solar zoo',
+    providerOrUrl:'https://rinkeby.infura.io/v3/b8051aded8e54b87b2a5aff71abaf2c5'
+});
 const constructorArgs = []; 
 const web3 = new Web3(provider);
 const deploy = async () => {
