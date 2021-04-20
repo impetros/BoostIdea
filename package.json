@@ -1,0 +1,24 @@
+{
+  "name": "boostidea",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/impetros/BoostIdea.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/impetros/BoostIdea/issues"
+  },
+  "homepage": "https://github.com/impetros/BoostIdea#readme",
+  "dependencies": {
+    "fs-extra": "^9.1.0",
+    "path": "^0.12.7",
+    "solc": "^0.8.3"
+  }
+}
