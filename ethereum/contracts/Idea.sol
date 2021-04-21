@@ -28,8 +28,11 @@ contract Idea {
     mapping (uint => Request) public requests;
     
     address public manager;
-    uint public oneCreditValue;
+    
+    uint public numUniqueApprovers;
     mapping(address => uint) public approvers;
+
+    uint public oneCreditValue;
     uint public credits;
 
     modifier allowOnlyManager() {
@@ -44,6 +47,10 @@ contract Idea {
     
     function contribute() public payable {
         require(msg.value >= oneCreditValue);
+
+        if(approvers[msg.sender] == 0) {
+            numUniqueApprovers++;
+        } 
 
         uint value = msg.value / oneCreditValue;
         approvers[msg.sender] += value;
