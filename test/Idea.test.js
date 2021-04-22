@@ -289,6 +289,34 @@ describe('Ideas', () => {
       }      
     });   
 
+    it('A contributor cannot approve a request more than once', async () => {
+      const contributorAddress = accounts[1];
+      await idea.methods.contribute().send({
+        from: contributorAddress,
+        gas: gas,
+        value: 300
+      });
+      await idea.methods.createRequest('desc', 300, accounts[1]).send({
+        from: manager,
+        gas: gas
+      });
+
+      await idea.methods.approveRequest(0).send({
+        from: contributorAddress,
+        gas: gas
+      });
+      
+      try {
+        await idea.methods.approveRequest(0).send({
+          from: contributorAddress,
+          gas: gas
+        });
+        assert(false);
+      } catch (ex) {
+        assert.strictEqual(ex.message, revertExceptionMessage);
+      };
+    });
+
     it('A manager can finalize a request', async () => {
       await idea.methods.createRequest('desc', 300, accounts[3]).send({
         from: manager,
@@ -315,16 +343,144 @@ describe('Ideas', () => {
       assert.strictEqual(parseInt(balanceAfterFinalize) - 300, parseInt(balanceBeforeFinalize));
     }); 
 
-    /*
-    todo:
-    (mai sus)
-    - un approvers sa incerce sa dea approve de mai multe ori la acelasi request si sa nu reuseasca
+    it('A non-manager account cannot finalize the request', async () => {
+      await idea.methods.createRequest('desc', 300, accounts[3]).send({
+        from: manager,
+        gas: gas
+      });
 
-    (aici)
-    - check sa nu poata termina fara minim checks
-    - sa nu poate da finalize la requests care nu exista
-    - un wf complet cu mai multi contributori
-    - sa nu se poata da finalize de 2 ori la un request
-    */
+      const contributorAddress1 = accounts[1];
+      await idea.methods.contribute().send({
+        from: contributorAddress1,
+        gas: gas,
+        value: 300
+      });
+      await idea.methods.approveRequest(0).send({
+        from: contributorAddress1,
+        gas: gas
+      });
 
+      try {
+        await idea.methods.finalizeRequest(0).send({
+          from: accounts[4],
+          gas: gas
+        });
+        assert(false);
+      } catch (ex) {
+        assert.strictEqual(ex.message, revertExceptionMessage);
+      };
+    }); 
+
+    it('Cannot finalize a request more than once', async () => {
+      await idea.methods.createRequest('desc', 300, accounts[3]).send({
+        from: manager,
+        gas: gas
+      });
+
+      const contributorAddress1 = accounts[1];
+      await idea.methods.contribute().send({
+        from: contributorAddress1,
+        gas: gas,
+        value: 300
+      });
+      await idea.methods.approveRequest(0).send({
+        from: contributorAddress1,
+        gas: gas
+      });
+
+      await idea.methods.finalizeRequest(0).send({
+        from: manager,
+        gas: gas
+      });
+
+      try {
+        await idea.methods.finalizeRequest(0).send({
+          from: manager,
+          gas: gas
+        });
+        assert(false);
+      } catch (ex) {
+        assert.strictEqual(ex.message, revertExceptionMessage);
+      }
+    }); 
+
+    it('Cannot finalize a non-existing request', async () => {
+      try {
+        await idea.methods.finalizeRequest(0).send({
+          from: manager,
+          gas: gas
+        });
+        assert(false);
+      } catch (ex) {
+        assert.strictEqual(ex.message, revertExceptionMessage);
+      };
+    }); 
+
+    it('Minim reqs for finalizing a request work', async () => {
+      await idea.methods.createRequest('desc', 300, accounts[3]).send({
+        from: manager,
+        gas: gas
+      });
+
+      const contributorAddress1 = accounts[1];
+      const contributorAddress2 = accounts[2];
+      const contributorAddress3 = accounts[3];
+      await idea.methods.contribute().send({
+        from: contributorAddress1,
+        gas: gas,
+        value: 600
+      });
+      await idea.methods.contribute().send({
+        from: contributorAddress2,
+        gas: gas,
+        value: 300
+      });
+      await idea.methods.contribute().send({
+        from: contributorAddress3,
+        gas: gas,
+        value: 300
+      });
+      await idea.methods.approveRequest(0).send({
+        from: contributorAddress1,
+        gas: gas
+      });
+
+      try {
+        await idea.methods.finalizeRequest(0).send({
+          from: manager,
+          gas: gas
+        });
+        assert(false);
+      } catch (ex) {
+        assert.strictEqual(ex.message, revertExceptionMessage);
+      };
+    }); 
+
+    it('Finish a request whose value exceeds the account balance', async () => {
+      await idea.methods.createRequest('desc', 1000, accounts[3]).send({
+        from: manager,
+        gas: gas
+      });
+
+      const contributorAddress1 = accounts[1];
+      await idea.methods.contribute().send({
+        from: contributorAddress1,
+        gas: gas,
+        value: 999
+      });
+      await idea.methods.approveRequest(0).send({
+        from: contributorAddress1,
+        gas: gas
+      });
+
+      try {
+        await idea.methods.finalizeRequest(0).send({
+          from: manager,
+          gas: gas
+        });
+        assert(false);
+      } catch (ex) {
+        assert.strictEqual(ex.message, revertExceptionMessage);
+      };
+    }); 
 });  
