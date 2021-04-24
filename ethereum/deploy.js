@@ -21,7 +21,7 @@ const deploy = async () => {
 
     const newContractInstance = await contract.send({
         from: accounts[0],
-        gas: 1500000,
+        gas: 3000000,
         gasPrice: '30000000000'
     });
     console.log('Contract deployed at address: ', newContractInstance.options.address);
