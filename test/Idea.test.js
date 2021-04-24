@@ -11,6 +11,10 @@ const constructorArgs = [];
 const revertExceptionMessage = 'VM Exception while processing transaction: revert';
 const gas = '1000000';
 
+const name = 'Unique You Books';
+const shortDesc = 'Create highly personalized books.';
+const desc = 'Every child will be able to identify with the heroes and heroines in our books.';
+
 let manager;
 let accounts;
 let factory;
@@ -34,14 +38,13 @@ beforeEach(async () => {
   // send it to the network
   factory = await contract.send({
       from: manager,
-      gas: 1500000,
-      gasPrice: '30000000000'
+      gas: 3000000
   });
 
   // create an Idea contract
-  await factory.methods.createIdea('100').send({
+  await factory.methods.createIdea(100, name, shortDesc, desc).send({
     from: manager,
-    gas: gas
+    gas: 3000000
   });
 
   // get Idea contract address
@@ -58,6 +61,16 @@ describe('Ideas', () => {
     it('Deploys a factory and a idea', () => {
       assert.ok(factory.options.address);
       assert.ok(idea.options.address);
+    });
+
+    it('The name, description and short description are correct.', async () => {
+      const ideaName = await idea.methods.name().call();
+      const ideaShortDescription = await idea.methods.shortDescription().call();
+      const ideaDescription = await idea.methods.description().call();
+
+      assert.strictEqual(ideaName, name);
+      assert.strictEqual(ideaDescription, desc);
+      assert.strictEqual(ideaShortDescription, shortDesc);
     });
 
     it('The manager is the correct one', async () => {

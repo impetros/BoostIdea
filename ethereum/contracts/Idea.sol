@@ -3,8 +3,8 @@ pragma solidity ^0.8.3;
 contract IdeaFactory {
     Idea[] public deployedIdeas;
 
-    function createIdea(uint minimum) public {
-        Idea newIdea = new Idea(minimum, msg.sender);
+    function createIdea(uint minimum, string memory name, string memory shortDescription, string memory description) public {
+        Idea newIdea = new Idea(minimum, name, shortDescription, description, msg.sender);
         deployedIdeas.push(newIdea);
     }
 
@@ -24,6 +24,11 @@ contract Idea {
         mapping (address => bool) approvals;
     }
     
+    string public name;
+    string public shortDescription;
+    string public description;
+    
+    
     uint public numRequests;
     mapping (uint => Request) public requests;
     
@@ -40,9 +45,12 @@ contract Idea {
         _;
     }
     
-    constructor(uint creditValue, address sender) {
+    constructor(uint creditValue, string memory ideaName, string memory ideaShortDescription, string memory ideaDescription, address sender) {
         manager = sender;
         oneCreditValue = creditValue;
+        name = ideaName;
+        shortDescription = ideaShortDescription;
+        description = ideaDescription;
     }
     
     function contribute() public payable {
