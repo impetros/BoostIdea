@@ -102,4 +102,19 @@ contract Idea {
         request.recipient.transfer(request.value);
         request.complete = true;
     }
+    
+    function getSummary() public view returns (
+      string memory, string memory, string memory, uint, uint, uint, uint, address
+      ) {
+        return (
+            name,
+            shortDescription,
+            description,
+            oneCreditValue,
+            address(this).balance,
+            numRequests,
+            credits,
+            manager
+        );
+    }
 }
