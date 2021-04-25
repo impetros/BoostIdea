@@ -43,7 +43,7 @@ beforeEach(async () => {
   });
 
   // create an Idea contract
-  await factory.methods.createIdea(100, name, shortDesc, desc, imageURL).send({
+  await factory.methods.createIdea(100, 10000, name, shortDesc, desc, imageURL).send({
     from: manager,
     gas: 3000000
   });

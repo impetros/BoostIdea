@@ -11,6 +11,7 @@ class IdeaNew extends Component {
     shortDescription: '',
     description: '',
     imageURL: '',
+    reachGoal: '',
     minimumContribution: '',
     errorMessage: '',
     loading: false
@@ -23,9 +24,9 @@ class IdeaNew extends Component {
 
     try {
       const accounts = await web3.eth.getAccounts();
-      console.log(accounts);
       await factory.methods
         .createIdea(this.state.minimumContribution,
+            this.state.reachGoal,
             this.state.name,
             this.state.shortDescription,
             this.state.description,
@@ -78,6 +79,16 @@ class IdeaNew extends Component {
               value={this.state.imageURL}
               onChange={event =>
                 this.setState({ imageURL: event.target.value })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Goal</label>
+            <Input
+              label="wei"
+              labelPosition="right"
+              value={this.state.reachGoal}
+              onChange={event =>
+                this.setState({ reachGoal: event.target.value })}
             />
           </Form.Field>
           <Form.Field>

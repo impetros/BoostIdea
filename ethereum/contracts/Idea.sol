@@ -3,8 +3,8 @@ pragma solidity ^0.8.3;
 contract IdeaFactory {
     Idea[] public deployedIdeas;
 
-    function createIdea(uint minimum, string memory name, string memory shortDescription, string memory description, string memory imageURL) public {
-        Idea newIdea = new Idea(minimum, name, shortDescription, description,imageURL, msg.sender);
+    function createIdea(uint minimum, uint reachGoal, string memory name, string memory shortDescription, string memory description, string memory imageURL) public {
+        Idea newIdea = new Idea(minimum, reachGoal, name, shortDescription, description,imageURL, msg.sender);
         deployedIdeas.push(newIdea);
     }
 
@@ -21,6 +21,7 @@ contract Idea {
         address payable recipient;
         bool complete;
         uint credits;
+        uint256 createdAt;
         mapping (address => bool) approvals;
     }
     
@@ -28,7 +29,9 @@ contract Idea {
     string public shortDescription;
     string public description;
     string public imageURL;
-    
+
+    uint256 createdAt;
+
     uint public numRequests;
     mapping (uint => Request) public requests;
     
@@ -40,18 +43,22 @@ contract Idea {
     uint public oneCreditValue;
     uint public credits;
 
+    uint public reachGoal;
+
     modifier allowOnlyManager() {
         require(msg.sender == manager);
         _;
     }
     
-    constructor(uint creditValue, string memory ideaName, string memory ideaShortDescription, string memory ideaDescription, string memory ideaImageURL, address sender) {
+    constructor(uint creditValue, uint ideaReachGoal, string memory ideaName, string memory ideaShortDescription, string memory ideaDescription, string memory ideaImageURL, address sender) {
         manager = sender;
         oneCreditValue = creditValue;
+        reachGoal = ideaReachGoal;
         name = ideaName;
         shortDescription = ideaShortDescription;
         description = ideaDescription;
         imageURL = ideaImageURL;
+        createdAt = block.timestamp;
     }
     
     function contribute() public payable {
@@ -82,6 +89,7 @@ contract Idea {
         r.recipient = recipient;
         r.complete = false;
         r.credits = 0;
+        r.createdAt = block.timestamp;
     }
     
     function approveRequest(uint index) public {
@@ -105,7 +113,7 @@ contract Idea {
     }
     
     function getSummary() public view returns (
-      string memory, string memory, string memory, string memory, uint, uint, uint, uint, address, address
+      string memory, string memory, string memory, string memory, uint, uint, uint, uint, address, address, uint256, uint
       ) {
         return (
             name,
@@ -117,7 +125,9 @@ contract Idea {
             numRequests,
             credits,
             address(this),
-            manager
+            manager,
+            createdAt,
+            reachGoal
         );
     }
 }

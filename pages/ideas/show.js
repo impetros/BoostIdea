@@ -22,7 +22,9 @@ class IdeaShow extends Component {
       requestsCount: summary[6],
       creditsCount: summary[7],
       address: summary[8],
-      manager: summary[9]
+      manager: summary[9],
+      createdAt: new Date(summary[10] * 1000),
+      reachGoal: summary[11]
     };
   }
 
