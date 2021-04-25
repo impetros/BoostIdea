@@ -42,7 +42,7 @@ class RequestRow extends Component {
         <Cell>{web3.utils.fromWei(request.value, 'ether')}</Cell>
         <Cell>{request.recipient}</Cell>
         <Cell>
-          {request.credits}/{creditsCount}
+        {web3.utils.fromWei(request.credits, 'ether')}/{web3.utils.fromWei(creditsCount, 'ether')}
         </Cell>
         <Cell>
           {request.complete ? null : (
