@@ -10,6 +10,7 @@ class IdeaNew extends Component {
     name: '',
     shortDescription: '',
     description: '',
+    imageURL: '',
     minimumContribution: '',
     errorMessage: '',
     loading: false
@@ -27,7 +28,8 @@ class IdeaNew extends Component {
         .createIdea(this.state.minimumContribution,
             this.state.name,
             this.state.shortDescription,
-            this.state.description)
+            this.state.description,
+            this.state.imageURL)
         .send({
           from: accounts[0]
         });
@@ -68,6 +70,14 @@ class IdeaNew extends Component {
               value={this.state.description}
               onChange={event =>
                 this.setState({ description: event.target.value })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Image url</label>
+            <Input
+              value={this.state.imageURL}
+              onChange={event =>
+                this.setState({ imageURL: event.target.value })}
             />
           </Form.Field>
           <Form.Field>

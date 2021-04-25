@@ -14,6 +14,7 @@ const gas = '1000000';
 const name = 'Unique You Books';
 const shortDesc = 'Create highly personalized books.';
 const desc = 'Every child will be able to identify with the heroes and heroines in our books.';
+const imageURL = 'https://d2r68eeixpqexd.cloudfront.net/41fd2ced63aa8d47a3142fa4cd46849b.jpg';
 
 let manager;
 let accounts;
@@ -42,7 +43,7 @@ beforeEach(async () => {
   });
 
   // create an Idea contract
-  await factory.methods.createIdea(100, name, shortDesc, desc).send({
+  await factory.methods.createIdea(100, name, shortDesc, desc, imageURL).send({
     from: manager,
     gas: 3000000
   });
@@ -67,10 +68,12 @@ describe('Ideas', () => {
       const ideaName = await idea.methods.name().call();
       const ideaShortDescription = await idea.methods.shortDescription().call();
       const ideaDescription = await idea.methods.description().call();
+      const ideaImageURL = await idea.methods.imageURL().call();
 
       assert.strictEqual(ideaName, name);
       assert.strictEqual(ideaDescription, desc);
       assert.strictEqual(ideaShortDescription, shortDesc);
+      assert.strictEqual(ideaImageURL, imageURL);
     });
 
     it('The manager is the correct one', async () => {

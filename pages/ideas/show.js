@@ -13,15 +13,16 @@ class IdeaShow extends Component {
     const summary = await idea.methods.getSummary().call();
 
     return {
-      address: props.query.address,
       name: summary[0],
       shortDescription: summary[1],
       description: summary[2],
-      minimumContribution: summary[3],
-      balance: summary[4],
-      requestsCount: summary[5],
-      creditsCount: summary[6],
-      manager: summary[7]
+      imageURL: summary[3],
+      minimumContribution: summary[4],
+      balance: summary[5],
+      requestsCount: summary[6],
+      creditsCount: summary[7],
+      address: summary[8],
+      manager: summary[9]
     };
   }
 

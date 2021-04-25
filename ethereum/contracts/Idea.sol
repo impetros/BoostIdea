@@ -3,8 +3,8 @@ pragma solidity ^0.8.3;
 contract IdeaFactory {
     Idea[] public deployedIdeas;
 
-    function createIdea(uint minimum, string memory name, string memory shortDescription, string memory description) public {
-        Idea newIdea = new Idea(minimum, name, shortDescription, description, msg.sender);
+    function createIdea(uint minimum, string memory name, string memory shortDescription, string memory description, string memory imageURL) public {
+        Idea newIdea = new Idea(minimum, name, shortDescription, description,imageURL, msg.sender);
         deployedIdeas.push(newIdea);
     }
 
@@ -27,7 +27,7 @@ contract Idea {
     string public name;
     string public shortDescription;
     string public description;
-    
+    string public imageURL;
     
     uint public numRequests;
     mapping (uint => Request) public requests;
@@ -45,12 +45,13 @@ contract Idea {
         _;
     }
     
-    constructor(uint creditValue, string memory ideaName, string memory ideaShortDescription, string memory ideaDescription, address sender) {
+    constructor(uint creditValue, string memory ideaName, string memory ideaShortDescription, string memory ideaDescription, string memory ideaImageURL, address sender) {
         manager = sender;
         oneCreditValue = creditValue;
         name = ideaName;
         shortDescription = ideaShortDescription;
         description = ideaDescription;
+        imageURL = ideaImageURL;
     }
     
     function contribute() public payable {
@@ -104,16 +105,18 @@ contract Idea {
     }
     
     function getSummary() public view returns (
-      string memory, string memory, string memory, uint, uint, uint, uint, address
+      string memory, string memory, string memory, string memory, uint, uint, uint, uint, address, address
       ) {
         return (
             name,
             shortDescription,
             description,
+            imageURL,
             oneCreditValue,
             address(this).balance,
             numRequests,
             credits,
+            address(this),
             manager
         );
     }
