@@ -18,6 +18,8 @@ const name = 'Unique You Books';
 const shortDesc = 'Create highly personalized books.';
 const desc = 'Every child will be able to identify with the heroes and heroines in our books.';
 const imageURL = 'https://d2r68eeixpqexd.cloudfront.net/41fd2ced63aa8d47a3142fa4cd46849b.jpg';
+const category = CategoriesEnum.MEDICAL;
+const isDonation = true;
 
 let manager;
 let accounts;
@@ -46,7 +48,7 @@ beforeEach(async () => {
   });
 
   // create an Idea contract
-  await factory.methods.createIdea(100, 10000, name, shortDesc, desc, imageURL).send({
+  await factory.methods.createIdea(100, 10000, name, shortDesc, desc, imageURL, category, isDonation).send({
     from: manager,
     gas: 3000000
   });
@@ -72,11 +74,15 @@ describe('Ideas', () => {
       const ideaShortDescription = await idea.methods.shortDescription().call();
       const ideaDescription = await idea.methods.description().call();
       const ideaImageURL = await idea.methods.imageURL().call();
+      const ideaCategory = await idea.methods.category().call();
+      const ideaIsDonation = await idea.methods.isDonation().call();
 
       assert.strictEqual(ideaName, name);
       assert.strictEqual(ideaDescription, desc);
       assert.strictEqual(ideaShortDescription, shortDesc);
       assert.strictEqual(ideaImageURL, imageURL);
+      assert.strictEqual(ideaCategory, category.toString());
+      assert.strictEqual(ideaIsDonation, isDonation);
     });
 
     it('The manager is the correct one', async () => {

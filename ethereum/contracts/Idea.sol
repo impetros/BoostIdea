@@ -10,7 +10,7 @@ contract IdeaFactory {
         string memory shortDescription,
         string memory description,
         string memory imageURL,
-        Category category,
+        Idea.Category category,
         bool isDonation
     ) public {
         Idea newIdea =
@@ -34,6 +34,16 @@ contract IdeaFactory {
 }
 
 contract Idea {
+    enum Category {
+        TECHNOLOGY,
+        FILM_VIDEOS,
+        EDUCATION,
+        MEDICAL,
+        FASHION,
+        DESIGN,
+        OTHERS
+    }
+
     struct Request {
         string description;
         uint256 value;
@@ -116,12 +126,12 @@ contract Idea {
     }
 
     function createRequest(
-        string memory description,
+        string memory requestDescription,
         uint256 value,
         address payable recipient
     ) public allowOnlyManager {
         Request storage r = requests[numRequests++];
-        r.description = description;
+        r.description = requestDescription;
         r.value = value;
         r.recipient = recipient;
         r.complete = false;
@@ -156,15 +166,10 @@ contract Idea {
             string memory,
             string memory,
             string memory,
-            string memory,
             Category,
             bool,
             uint256,
             uint256,
-            uint256,
-            uint256,
-            address,
-            address,
             uint256,
             uint256
         )
@@ -172,28 +177,33 @@ contract Idea {
         return (
             name,
             shortDescription,
-            description,
             imageURL,
             category,
             isDonation,
             oneCreditValue,
-            address(this).balance,
-            numRequests,
             credits,
-            address(this),
-            manager,
             createdAt,
             reachGoal
         );
     }
+    
+    function getMoreDetails()
+        public
+        view
+        returns (
+            string memory,
+            uint256,
+            uint256,
+            address
+        )
+    {
+        return (
+            description,
+            numRequests,
+            address(this).balance,
+            manager
+        );
+    }
 }
 
-enum Category {
-    TECHNOLOGY,
-    FILM_VIDEOS,
-    EDUCATION,
-    MEDICAL,
-    FASHION,
-    DESIGN,
-    OTHERS
-}
+
