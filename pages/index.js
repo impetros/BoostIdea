@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Card, Button, Image, Progress } from 'semantic-ui-react';
+import { Card, Image, Progress, Container } from 'semantic-ui-react';
 import factory from '../ethereum/factory';
 import Idea from '../ethereum/idea';
 import Layout from '../components/Layout';
-import { Link } from '../routes';
+
 
 class BoostIdeaIndex extends Component {
   static async getInitialProps() {
@@ -49,22 +49,15 @@ class BoostIdeaIndex extends Component {
   render() {
     return (
       <Layout>
-        <div>
-          <h3>Open Ideas</h3>
-
-          <Link route="/ideas/new">
-            <a>
-              <Button
-                floated="right"
-                content="Create Idea"
-                icon="add circle"
-                primary
-              />
-            </a>
-          </Link>
-
-          {this.renderIdeas()}
+        <div class="myContainer">
+           <Image src='https://storage.googleapis.com/petros-projects/2822.jpg' className="banner1"/>
+           <div class="centered bannerTitle">Crowfunding Platform</div>
         </div>
+        
+        <Container>
+          <h3>Open Ideas</h3>
+          {this.renderIdeas()}
+        </Container>
       </Layout>
     );
   }
