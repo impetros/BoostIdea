@@ -51,7 +51,16 @@ class BoostIdeaIndex extends Component {
       <Layout>
         <div class="myContainer">
            <Image src='https://storage.googleapis.com/petros-projects/2822.jpg' className="banner1"/>
-           <div class="centered bannerTitle">Crowfunding Platform</div>
+           <div class="centered">
+
+             <div class="bannerTitle">
+                Crowfunding Platform
+             </div>
+             <div class="bannerDescription">
+                Raising Money Has Never Been So Easy
+             </div>
+             <a class="createBanner" role="button" href="/ideas/new">Boost Your Idea</a>
+            </div>
         </div>
         
         <Container>
