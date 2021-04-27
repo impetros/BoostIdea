@@ -3,8 +3,28 @@ pragma solidity ^0.8.3;
 contract IdeaFactory {
     Idea[] public deployedIdeas;
 
-    function createIdea(uint minimum, uint reachGoal, string memory name, string memory shortDescription, string memory description, string memory imageURL) public {
-        Idea newIdea = new Idea(minimum, reachGoal, name, shortDescription, description,imageURL, msg.sender);
+    function createIdea(
+        uint256 minimum,
+        uint256 reachGoal,
+        string memory name,
+        string memory shortDescription,
+        string memory description,
+        string memory imageURL,
+        Category category,
+        bool isDonation
+    ) public {
+        Idea newIdea =
+            new Idea(
+                minimum,
+                reachGoal,
+                name,
+                shortDescription,
+                description,
+                imageURL,
+                category,
+                isDonation,
+                msg.sender
+            );
         deployedIdeas.push(newIdea);
     }
 
@@ -13,44 +33,55 @@ contract IdeaFactory {
     }
 }
 
-
 contract Idea {
     struct Request {
         string description;
-        uint value;
+        uint256 value;
         address payable recipient;
         bool complete;
-        uint credits;
+        uint256 credits;
         uint256 createdAt;
-        mapping (address => bool) approvals;
+        mapping(address => bool) approvals;
     }
-    
+
     string public name;
     string public shortDescription;
     string public description;
     string public imageURL;
+    Category public category;
+    bool public isDonation;
 
     uint256 createdAt;
 
-    uint public numRequests;
-    mapping (uint => Request) public requests;
-    
+    uint256 public numRequests;
+    mapping(uint256 => Request) public requests;
+
     address public manager;
-    
-    uint public numUniqueApprovers;
-    mapping(address => uint) public approvers;
 
-    uint public oneCreditValue;
-    uint public credits;
+    uint256 public numUniqueApprovers;
+    mapping(address => uint256) public approvers;
 
-    uint public reachGoal;
+    uint256 public oneCreditValue;
+    uint256 public credits;
+
+    uint256 public reachGoal;
 
     modifier allowOnlyManager() {
         require(msg.sender == manager);
         _;
     }
-    
-    constructor(uint creditValue, uint ideaReachGoal, string memory ideaName, string memory ideaShortDescription, string memory ideaDescription, string memory ideaImageURL, address sender) {
+
+    constructor(
+        uint256 creditValue,
+        uint256 ideaReachGoal,
+        string memory ideaName,
+        string memory ideaShortDescription,
+        string memory ideaDescription,
+        string memory ideaImageURL,
+        Category ideaCategory,
+        bool ideaIsDonation,
+        address sender
+    ) {
         manager = sender;
         oneCreditValue = creditValue;
         reachGoal = ideaReachGoal;
@@ -58,31 +89,37 @@ contract Idea {
         shortDescription = ideaShortDescription;
         description = ideaDescription;
         imageURL = ideaImageURL;
+        category = ideaCategory;
+        isDonation = ideaIsDonation;
         createdAt = block.timestamp;
     }
-    
+
     function contribute() public payable {
         require(msg.value >= oneCreditValue);
 
-        if(approvers[msg.sender] == 0) {
+        if (approvers[msg.sender] == 0) {
             numUniqueApprovers++;
-        } 
+        }
 
-        uint value = msg.value / oneCreditValue;
+        uint256 value = msg.value / oneCreditValue;
         approvers[msg.sender] += value;
         credits += value;
-        
-        // calculate the change 
-        uint change = msg.value % oneCreditValue;
-        
+
+        // calculate the change
+        uint256 change = msg.value % oneCreditValue;
+
         // send the change back to the approver
-        if(change != 0) {
+        if (change != 0) {
             address payable senderAddress = payable(msg.sender);
             senderAddress.transfer(change);
         }
     }
-    
-    function createRequest(string memory description, uint value, address payable recipient) public allowOnlyManager {
+
+    function createRequest(
+        string memory description,
+        uint256 value,
+        address payable recipient
+    ) public allowOnlyManager {
         Request storage r = requests[numRequests++];
         r.description = description;
         r.value = value;
@@ -91,8 +128,8 @@ contract Idea {
         r.credits = 0;
         r.createdAt = block.timestamp;
     }
-    
-    function approveRequest(uint index) public {
+
+    function approveRequest(uint256 index) public {
         Request storage request = requests[index];
 
         require(approvers[msg.sender] > 0);
@@ -102,7 +139,7 @@ contract Idea {
         request.credits += approvers[msg.sender];
     }
 
-    function finalizeRequest(uint index) public allowOnlyManager {
+    function finalizeRequest(uint256 index) public allowOnlyManager {
         Request storage request = requests[index];
 
         require(request.credits > (credits / 2));
@@ -111,15 +148,34 @@ contract Idea {
         request.recipient.transfer(request.value);
         request.complete = true;
     }
-    
-    function getSummary() public view returns (
-      string memory, string memory, string memory, string memory, uint, uint, uint, uint, address, address, uint256, uint
-      ) {
+
+    function getSummary()
+        public
+        view
+        returns (
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            Category,
+            bool,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            address,
+            address,
+            uint256,
+            uint256
+        )
+    {
         return (
             name,
             shortDescription,
             description,
             imageURL,
+            category,
+            isDonation,
             oneCreditValue,
             address(this).balance,
             numRequests,
@@ -130,4 +186,14 @@ contract Idea {
             reachGoal
         );
     }
+}
+
+enum Category {
+    TECHNOLOGY,
+    FILM_VIDEOS,
+    EDUCATION,
+    MEDICAL,
+    FASHION,
+    DESIGN,
+    OTHERS
 }

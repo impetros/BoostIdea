@@ -7,6 +7,9 @@ const web3 = new Web3(ganache.provider());
 const compiledFactory = require('../ethereum/build/IdeaFactory.json');
 const compiledIdea = require('../ethereum/build/Idea.json');
 
+const CategoriesEnum = require('../common/categories.js')[0];
+
+
 const constructorArgs = []; 
 const revertExceptionMessage = 'VM Exception while processing transaction: revert';
 const gas = '1000000';

@@ -9,10 +9,9 @@ class BoostIdeaIndex extends Component {
   static async getInitialProps() {
     const deployedIdeas = await factory.methods.getDeployedIdeas().call();
     let ideas = [];
-    await Promise.all(deployedIdeas.map(async (deployedIdea) => {
+    await Promise.all(deployedIdeas.slice(Math.max(deployedIdeas.length - 5, 0)).map(async (deployedIdea) => {
       const idea = Idea(deployedIdea);
       const summary = await idea.methods.getSummary().call();
-      console.log(summary);
       ideas.push({
         name: summary[0],
         shortDescription: summary[1],
@@ -64,7 +63,7 @@ class BoostIdeaIndex extends Component {
         </div>
         
         <Container>
-          <h3>Open Ideas</h3>
+          <h3>Hot ideas</h3>
           {this.renderIdeas()}
         </Container>
       </Layout>
