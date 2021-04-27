@@ -4,20 +4,19 @@ import { Link } from '../routes';
 
 export default () => {
   return (
-    <Menu style={{ marginTop: '10px' }}>
-      <Link route="/">
-        <a className="item">BoostIdea</a>
-      </Link>
 
-      <Menu.Menu position="right">
-        <Link route="/">
-          <a className="item">Ideas</a>
-        </Link>
-
-        <Link route="/ideas/new">
-          <a className="item">+</a>
-        </Link>
-      </Menu.Menu>
-    </Menu>
+    <div>
+        <div class="header-dark">
+            <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search">
+                <div class="container"><a class="navbar-brand" href="/">BoostIdea</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse"
+                        id="navcol-1">
+                        <form class="form-inline mr-auto" target="_self">
+                            <div class="form-group"><label for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" name="search" id="search-field"/></div>
+                        </form><span class="navbar-text"><a href="/" class="login">Explore</a></span><a class="btn btn-light action-button" role="button" href="/ideas/new">Create</a></div>
+                </div>
+            </nav>
+        </div>
+    </div>
   );
 };
