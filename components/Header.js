@@ -34,7 +34,7 @@ export default () => {
                 </div>
               </form>
               <span className="navbar-text" style={{marginRight: '30px'}}>
-                <a href="/" className="login" style={{color: 'gray'}}>
+                <a href="/ideas/all" className="login" style={{color: 'gray'}}>
                   Explore
                 </a>
               </span>
