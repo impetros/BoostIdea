@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Card, Grid, Button } from "semantic-ui-react";
+import { Card, Grid, Button, Image, Progress } from "semantic-ui-react";
 import Layout from "../../components/Layout";
+import CategorySpan from "../../components/CategorySpan";
 import Idea from "../../ethereum/idea";
 import web3 from "../../ethereum/web3";
 import BeAContributorForm from "../../components/BeAContributorForm";
@@ -28,7 +29,7 @@ class IdeaShow extends Component {
       description: moreDetails[0],
       requestsCount: moreDetails[1],
       balance: moreDetails[2],
-      manager: moreDetails[3]
+      manager: moreDetails[3],
     };
   }
 
@@ -47,7 +48,7 @@ class IdeaShow extends Component {
       description,
       requestsCount,
       balance,
-      manager
+      manager,
     } = this.props;
 
     const items = [
@@ -87,28 +88,45 @@ class IdeaShow extends Component {
   }
 
   render() {
+    const percent = (this.props.minimumContribution * this.props.creditsCount) / this.props.reachGoal;
     return (
       <Layout>
-        <h3>Idea Show</h3>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={10}>{this.renderCards()}</Grid.Column>
+        <section style={{margin: '0 20% 0 20%'}}>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={10}>
+                <Image src={this.props.imageURL} width="500" height="500"/>
+              </Grid.Column>
 
-            <Grid.Column width={6}>
-              <BeAContributorForm address={this.props.address} />
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column>
-              <Link route={`/ideas/${this.props.address}/requests`}>
-                <a>
-                  <Button primary>View Requests</Button>
-                </a>
-              </Link>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+              <Grid.Column width={6}>
+                <h2 style={{fontSize: '5em', fontWeight: 'bold'}}>{this.props.name}</h2>
+                <div style={{width: '50%', float: 'right'}}>
+                    <CategorySpan categoryName={this.props.category} />
+                </div>
+                <h4 style={{fontStyle: 'italic'}}>{this.props.shortDescription}</h4>
+                <p>{this.props.description}</p>
+                <div>
+                  <Progress percent={percent} progress="percent" indicating></Progress>
+                </div>
+                <BeAContributorForm address={this.props.address} />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+              {this.renderCards()}
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                <Link route={`/ideas/${this.props.address}/requests`}>
+                  <a>
+                    <Button primary>View Requests</Button>
+                  </a>
+                </Link>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </section>
       </Layout>
     );
   }
