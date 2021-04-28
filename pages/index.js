@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Card, Image, Progress, Container } from 'semantic-ui-react';
+import { Image, Container } from 'semantic-ui-react';
 import factory from '../ethereum/factory';
 import Idea from '../ethereum/idea';
 import Layout from '../components/Layout';
-
+import IdeasCards from '../components/IdeasCards';
 
 class BoostIdeaIndex extends Component {
   static async getInitialProps() {
@@ -12,8 +12,8 @@ class BoostIdeaIndex extends Component {
     await Promise.all(deployedIdeas.slice(Math.max(deployedIdeas.length - 5, 0)).map(async (deployedIdea) => {
       const idea = Idea(deployedIdea);
       const summary = await idea.methods.getSummary().call();
-      console.log(summary);
       ideas.push({
+        address: deployedIdea,
         name: summary[0],
         shortDescription: summary[1],
         imageURL: summary[2],
@@ -28,19 +28,7 @@ class BoostIdeaIndex extends Component {
   }
 
   renderIdeas() {
-    const items = this.props.ideas.map(idea => {
-      const percent = (idea.minimumContribution * idea.creditsCount) / idea.reachGoal;
-      return {
-        header: idea.name,
-        image: <Image src={idea.imageURL} size='medium' wrapped />,
-        meta: "Created at " + idea.createdAt.toString().substring(0, idea.createdAt.toString().indexOf("T")),
-        description: idea.shortDescription,
-        extra:<Progress percent={percent} progress='percent' indicating></Progress>,
-        href: `/ideas/${idea.address}`
-      };
-    });
-
-    return <Card.Group items={items} />;
+    return <IdeasCards ideas={this.props.ideas}/>
   }
 
   render() {
