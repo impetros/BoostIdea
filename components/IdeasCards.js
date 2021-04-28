@@ -6,7 +6,7 @@ class IdeasCards extends Component {
   render() {
     const items = this.props.ideas.map((idea) => {
       const percent =
-        (idea.minimumContribution * idea.credits) / idea.reachGoal;
+        (idea.minimumContribution * idea.credits) / idea.reachGoal * 100;
       return {
         header: idea.name,
         image: <Image src={idea.imageURL} size="medium" wrapped />,

@@ -88,7 +88,7 @@ class IdeaShow extends Component {
   }
 
   render() {
-    const percent = (this.props.minimumContribution * this.props.creditsCount) / this.props.reachGoal;
+    const percent = (this.props.minimumContribution * this.props.creditsCount) / this.props.reachGoal * 100;
     return (
       <Layout>
         <section style={{margin: '0 20% 0 20%'}}>
