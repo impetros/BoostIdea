@@ -4,7 +4,7 @@ import IdeaFactory from './build/IdeaFactory.json';
 
 const instance = new web3.eth.Contract(
   IdeaFactory.abi,
-  '0x1832e84F25C9D9cFA0a6610765212e7a5438AC4A'
+  '0xb779d5167d75f99be410cF8763D6b71988bE5E3d'
 );
 
 export default instance;

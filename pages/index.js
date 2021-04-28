@@ -12,19 +12,17 @@ class BoostIdeaIndex extends Component {
     await Promise.all(deployedIdeas.slice(Math.max(deployedIdeas.length - 5, 0)).map(async (deployedIdea) => {
       const idea = Idea(deployedIdea);
       const summary = await idea.methods.getSummary().call();
+      console.log(summary);
       ideas.push({
         name: summary[0],
         shortDescription: summary[1],
-        description: summary[2],
-        imageURL: summary[3],
-        minimumContribution: summary[4],
-        balance: summary[5],
-        requestsCount: summary[6],
-        creditsCount: summary[7],
-        address: summary[8],
-        manager: summary[9],
-        createdAt: new Date(summary[10] * 1000),
-        reachGoal: summary[11]});
+        imageURL: summary[2],
+        category: summary[3],
+        isDonation: summary[4],
+        oneCreditValue: summary[5],
+        credits: summary[6],
+        createdAt: new Date(summary[7] * 1000),
+        reachGoal: summary[8]});
     }));
     return { ideas };
   }
@@ -48,17 +46,17 @@ class BoostIdeaIndex extends Component {
   render() {
     return (
       <Layout>
-        <div class="myContainer">
+        <div className="myContainer">
            <Image src='https://storage.googleapis.com/petros-projects/2822.jpg' className="banner1"/>
-           <div class="centered">
+           <div className="centered">
 
-             <div class="bannerTitle">
+             <div className="bannerTitle">
                 Crowfunding Platform
              </div>
-             <div class="bannerDescription">
+             <div className="bannerDescription">
                 Raising Money Has Never Been So Easy
              </div>
-             <a class="createBanner" role="button" href="/ideas/new">Boost Your Idea</a>
+             <a className="createBanner" role="button" href="/ideas/new">Boost Your Idea</a>
             </div>
         </div>
         
