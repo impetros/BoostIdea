@@ -617,7 +617,6 @@ textarea.input1 + .shadow-input1 {
   transition: all 0.4s ease;
 }
 
-
 .dropdownlist1 {
   border-radius: 50px;
   height: 50px;
@@ -626,4 +625,20 @@ textarea.input1 + .shadow-input1 {
   color: #666 !important;
   padding: 0 30px;
   opacity: 80%;
+}
+
+.categorySpanDiv {
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  background: blue;
+  line-height: 30px;
+  padding: 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.progress {
+  height: 25px;
+  background-color : transparent;
 }

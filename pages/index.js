@@ -12,6 +12,7 @@ class BoostIdeaIndex extends Component {
     await Promise.all(deployedIdeas.slice(Math.max(deployedIdeas.length - 5, 0)).map(async (deployedIdea) => {
       const idea = Idea(deployedIdea);
       const summary = await idea.methods.getSummary().call();
+      
       ideas.push({
         address: deployedIdea,
         name: summary[0],
@@ -19,7 +20,7 @@ class BoostIdeaIndex extends Component {
         imageURL: summary[2],
         category: summary[3],
         isDonation: summary[4],
-        oneCreditValue: summary[5],
+        minimumContribution: summary[5],
         credits: summary[6],
         createdAt: new Date(summary[7] * 1000),
         reachGoal: summary[8]});
