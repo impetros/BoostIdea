@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Card, Grid, Button, Image, Progress } from "semantic-ui-react";
+import { Card, Grid, Button, Image } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import CategorySpan from "../../components/CategorySpan";
 import Idea from "../../ethereum/idea";
 import web3 from "../../ethereum/web3";
 import BeAContributorForm from "../../components/BeAContributorForm";
 import { Link } from "../../routes";
+import ProgressBar from "../../components/ProgressBar";
 
 class IdeaShow extends Component {
   static async getInitialProps(props) {
@@ -106,7 +107,7 @@ class IdeaShow extends Component {
                 <h4 style={{fontStyle: 'italic'}}>{this.props.shortDescription}</h4>
                 <p>{this.props.description}</p>
                 <div>
-                  <Progress percent={percent} progress="percent" indicating></Progress>
+                  <ProgressBar percent={percent} goal={web3.utils.fromWei(this.props.reachGoal, 'ether')}></ProgressBar>
                 </div>
                 <BeAContributorForm address={this.props.address} />
               </Grid.Column>

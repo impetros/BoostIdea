@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Image, Progress, Card } from 'semantic-ui-react';
+import { Image, Card } from 'semantic-ui-react';
 import CategorySpan from './CategorySpan';
+import ProgressBar from './ProgressBar';
+import web3 from "../ethereum/web3";
 
 class IdeasCards extends Component {
   render() {
@@ -25,7 +27,7 @@ class IdeasCards extends Component {
                 </div>
             </div>,
         extra: (
-          <Progress percent={percent} progress="percent" indicating></Progress>
+          <ProgressBar percent={percent} goal={web3.utils.fromWei(idea.reachGoal, 'ether')}></ProgressBar>
         ),
         href: `/ideas/${idea.address}`,
       };
