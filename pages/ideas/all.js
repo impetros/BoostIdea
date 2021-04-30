@@ -13,7 +13,7 @@ class AllIdeas extends Component {
       deployedIdeas.map(async (deployedIdea) => {
         const idea = Idea(deployedIdea);
         const summary = await idea.methods.getSummary().call();
-
+        
         ideas.push({
           address: deployedIdea,
           name: summary[0],

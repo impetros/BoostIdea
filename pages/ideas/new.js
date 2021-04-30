@@ -59,7 +59,6 @@ class IdeaNew extends Component {
   render() {
     return (
       <Layout>
-        {/* <Container> */}
         <div className="contact1">
           <div className="container-contact1">
             <div className="contact1-pic js-tilt" data-tilt>
