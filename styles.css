@@ -646,3 +646,7 @@ textarea.input1 + .shadow-input1 {
 .ui.progress:first-child {
   margin: 0.5em 0 1em !important;
 }
+
+.requestCardDescription {
+  font-weight: 600;
+}

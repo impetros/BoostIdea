@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Button, Table } from 'semantic-ui-react';
-import { Link } from '../../../routes';
-import Layout from '../../../components/Layout';
-import Idea from '../../../ethereum/idea';
-import RequestRow from '../../../components/RequestRow';
+import React, { Component } from "react";
+import { Button, Table, Container } from "semantic-ui-react";
+import { Link } from "../../../routes";
+import Layout from "../../../components/Layout";
+import Idea from "../../../ethereum/idea";
+import RequestsCards from "../../../components/RequestsCards";
 
 class RequestIndex extends Component {
   static async getInitialProps(props) {
@@ -15,56 +15,55 @@ class RequestIndex extends Component {
     const requests = await Promise.all(
       Array(parseInt(numRequests))
         .fill()
-        .map((element, index) => {
-          return idea.methods.requests(index).call();
+        .map(async (element, index) => {
+          let request = await idea.methods.requests(index).call();
+          request.id = index;
+          return request;
         })
     );
 
     return { address, requests, requestCount: numRequests, creditsCount };
   }
 
-  renderRows() {
-    return this.props.requests.map((request, index) => {
-      return (
-        <RequestRow
-          key={index}
-          id={index}
-          request={request}
-          address={this.props.address}
-          creditsCount={this.props.creditsCount}
-        />
-      );
-    });
-  }
-
   render() {
-    const { Header, Row, HeaderCell, Body } = Table;
-
     return (
       <Layout>
-        <h3>Requests</h3>
-        <Link route={`/ideas/${this.props.address}/requests/new`}>
-          <a>
-            <Button primary floated="right" style={{ marginBottom: 10 }}>
-              Add Request
-            </Button>
-          </a>
-        </Link>
-        <Table>
-          <Header>
-            <Row>
-              <HeaderCell>ID</HeaderCell>
-              <HeaderCell>Description</HeaderCell>
-              <HeaderCell>Amount</HeaderCell>
-              <HeaderCell>Recipient</HeaderCell>
-              <HeaderCell>Approval Count</HeaderCell>
-              <HeaderCell>Approve</HeaderCell>
-              <HeaderCell>Finalize</HeaderCell>
-            </Row>
-          </Header>
-          <Body>{this.renderRows()}</Body>
-        </Table>
-        <div>Found {this.props.requestCount} requests.</div>
+        <Container>
+          <Link route={`/ideas/${this.props.address}/requests/new`}>
+            <a>
+              <Button primary floated="right" style={{ marginBottom: 10 }}>
+                Add Request
+              </Button>
+            </a>
+          </Link>
+          {this.props.requests.find((p) => !p.complete) != undefined && (
+            <div>
+              <h2>Open requests</h2>
+              <div style={{ margin: "20px 0" }}>
+                <RequestsCards
+                  ideaAddress={this.props.address}
+                  requests={this.props.requests.filter((p) => !p.complete)}
+                  creditsCount={this.props.creditsCount}
+                />
+              </div>
+            </div>
+          )}
+
+          {this.props.requests.find((p) => p.complete) != undefined && (
+            <div>
+              <h2>Closed requests</h2>
+              <div style={{ margin: "20px 0" }}>
+                <RequestsCards
+                  ideaAddress={this.props.address}
+                  requests={this.props.requests.filter((p) => p.complete)}
+                  creditsCount={this.props.creditsCount}
+                />
+              </div>
+            </div>
+          )}
+
+          <div>Found {this.props.requestCount} requests.</div>
+        </Container>
       </Layout>
     );
   }
