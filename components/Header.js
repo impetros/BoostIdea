@@ -4,7 +4,7 @@ import { Link } from "../routes";
 
 export default () => {
   return (
-    <div>
+    <div style={{boxShadow: '0 0 3px rgb(0 0 0 / 21%)'}}>
       <div className="header-dark">
         <nav className="navbar navbar-dark navbar-expand-md navigation-clean-search">
           <div className="container">

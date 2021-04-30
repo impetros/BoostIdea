@@ -650,3 +650,11 @@ textarea.input1 + .shadow-input1 {
 .requestCardDescription {
   font-weight: 600;
 }
+
+.ui.column.grid>[class*="ten wide"].column, .ui.grid>.column.row>[class*="ten wide"].column, .ui.grid>.row>[class*="ten wide"].column, .ui.grid>[class*="ten wide"].column {
+  width: 50%!important;
+}
+
+.ui.column.grid>[class*="six wide"].column, .ui.grid>.column.row>[class*="six wide"].column, .ui.grid>.row>[class*="six wide"].column, .ui.grid>[class*="six wide"].column {
+  width: 50%!important;
+}

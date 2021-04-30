@@ -89,7 +89,8 @@ class IdeaShow extends Component {
           <Grid>
             <Grid.Row>
               <Grid.Column width={10}>
-                <Image src={this.props.imageURL} width="500" height="500" />
+                <Image src={this.props.imageURL} width="500" height="500" 
+                style={{marginTop: '15px'}}/>
                 {this.props.isDonation && (
                   <div>
                     <div
@@ -116,7 +117,7 @@ class IdeaShow extends Component {
                 <h2 style={{ fontSize: "5em", fontWeight: "bold" }}>
                   {this.props.name}
                 </h2>
-                <div style={{ width: "50%", float: "right" }}>
+                <div style={{ width: "30%", float: "right" }}>
                   <CategorySpan categoryName={this.props.category} />
                 </div>
                 <h4 style={{ fontStyle: "italic" }}>
