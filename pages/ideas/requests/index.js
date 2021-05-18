@@ -29,40 +29,44 @@ class RequestIndex extends Component {
     return (
       <Layout>
         <Container>
-          <Link route={`/ideas/${this.props.address}/requests/new`}>
-            <a>
-              <Button primary floated="right" style={{ marginBottom: 10 }}>
-                Add Request
-              </Button>
-            </a>
-          </Link>
-          {this.props.requests.find((p) => !p.complete) != undefined && (
-            <div>
-              <h2>Open requests</h2>
-              <div style={{ margin: "20px 0" }}>
-                <RequestsCards
-                  ideaAddress={this.props.address}
-                  requests={this.props.requests.filter((p) => !p.complete)}
-                  creditsCount={this.props.creditsCount}
-                />
+          <div style={{marginTop: '20px'}}>
+            <Link route={`/ideas/${this.props.address}/requests/new`}>
+              <a>
+                <Button primary floated="right" style={{ marginBottom: 10 }}>
+                  Add Request
+                </Button>
+              </a>
+            </Link>
+            {this.props.requests.find((p) => !p.complete) != undefined && (
+              <div>
+                <h2>Open requests</h2>
+                <div style={{ margin: "20px 0" }}>
+                  <RequestsCards
+                    ideaAddress={this.props.address}
+                    requests={this.props.requests.filter((p) => !p.complete)}
+                    creditsCount={this.props.creditsCount}
+                    finished={false}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {this.props.requests.find((p) => p.complete) != undefined && (
-            <div>
-              <h2>Closed requests</h2>
-              <div style={{ margin: "20px 0" }}>
-                <RequestsCards
-                  ideaAddress={this.props.address}
-                  requests={this.props.requests.filter((p) => p.complete)}
-                  creditsCount={this.props.creditsCount}
-                />
+            {this.props.requests.find((p) => p.complete) != undefined && (
+              <div>
+                <h2>Closed requests</h2>
+                <div style={{ margin: "20px 0" }}>
+                  <RequestsCards
+                    ideaAddress={this.props.address}
+                    requests={this.props.requests.filter((p) => p.complete)}
+                    creditsCount={this.props.creditsCount}
+                    finished={true}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          <div>Found {this.props.requestCount} requests.</div>
+            <div>Found {this.props.requestCount} requests.</div>
+          </div>
         </Container>
       </Layout>
     );

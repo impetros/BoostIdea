@@ -658,3 +658,7 @@ textarea.input1 + .shadow-input1 {
 .ui.column.grid>[class*="six wide"].column, .ui.grid>.column.row>[class*="six wide"].column, .ui.grid>.row>[class*="six wide"].column, .ui.grid>[class*="six wide"].column {
   width: 50%!important;
 }
+
+.ui.cards>.card {
+  margin: .875em 1em; 
+}

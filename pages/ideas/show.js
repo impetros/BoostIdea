@@ -114,7 +114,7 @@ class IdeaShow extends Component {
               </Grid.Column>
 
               <Grid.Column width={6}>
-                <h2 style={{ fontSize: "5em", fontWeight: "bold" }}>
+                <h2 style={{ fontSize: "2.5em", fontWeight: "bold" }}>
                   {this.props.name}
                 </h2>
                 <div style={{ width: "30%", float: "right" }}>

@@ -13,7 +13,9 @@ class AllIdeas extends Component {
       deployedIdeas.map(async (deployedIdea) => {
         const idea = Idea(deployedIdea);
         const summary = await idea.methods.getSummary().call();
-        
+        if(summary[0] == "nume"){
+          return;
+        }
         ideas.push({
           address: deployedIdea,
           name: summary[0],
@@ -38,10 +40,10 @@ class AllIdeas extends Component {
   render() {
     return (
       <Layout>
-        <Container>
-          <h3>All Ideas</h3>
+        <div style={{margin: '20px 10px 0 80px'}}>
+          <h3 style={{ fontSize: '2.5rem',fontWeight: 'bold', marginBottom: 'bold', marginBottom: '20px' }}>All Ideas</h3>
           {this.renderIdeas()}
-        </Container>
+        </div>
       </Layout>
     );
   }

@@ -30,11 +30,13 @@ class RequestsCards extends Component {
 
   render() {
     const requests = this.props.requests.map((request) => {
-      const percent = (request.credits / this.props.creditsCount) * 100;
+      const initialPercent = (request.credits / this.props.creditsCount) * 100;
+      const percentString = initialPercent.toString();
+      const percent = percentString.substring(0, (percentString.indexOf('.') > -1 && percentString.indexOf('.') + 3 < percentString.length) ? 
+                                                    percentString.indexOf('.') + 3 : percentString.length);
       const createdAtDate = new Date(request.createdAt * 1000);
-      const createdAt = createdAtDate
-        .toString()
-        .substring(0, createdAtDate.toString().indexOf("T"));
+      const createdAt = createdAtDate.toLocaleString();
+      console.log("vefore: " + initialPercent + " | after: " + percent);
       return {
         header: request.description,
         meta: "Created at " + createdAt,
@@ -54,6 +56,7 @@ class RequestsCards extends Component {
         ),
         extra: (
           <div>
+            { this.props.finished != true && 
             <div className="ui two buttons">
               <Button
                 basic
@@ -74,13 +77,16 @@ class RequestsCards extends Component {
                 Finalize
               </Button>
             </div>
+            }
             <br/>
-            <Progress
+            
+              <Progress
               percent={percent}
               progress="percent"
               indicating
               style={{margin: '20px 0'}}
             ></Progress>
+            
           </div>
         ),
       };

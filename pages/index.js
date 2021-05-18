@@ -49,10 +49,10 @@ class BoostIdeaIndex extends Component {
             </div>
         </div>
         
-        <Container>
-          <h3>Hot ideas</h3>
+        <div style={{margin: '20px 10px 0 30px'}}>
+          <h3 style={{ fontSize: '2.5rem',fontWeight: 'bold', marginBottom: 'bold', marginBottom: '20px' }}>Hot ideas</h3>
           {this.renderIdeas()}
-        </Container>
+        </div>
       </Layout>
     );
   }
